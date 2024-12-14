@@ -4,56 +4,31 @@ import os
 # W= Write
 # X= Create
 
-# Reads file if it does exist
+def modify_file(filename):
+  """Reads a file, adds a line, and writes it to a new file.
 
-file = open("names.txt")
-for line in file: 
-    print(line)
-file.close() 
+  Args:
+    filename: The name of the file to modify.
+  """
 
-# Trying to read a file that doesn't exist
-try:
-    file= open("monkeys.txt")
-    print(file.read())
-except:
-    print("The file you want to read does not exist")
-finally:
-    file.close()   
-# Appimportend- Adds more items to the file 
-file= open("names.txt", "a")
-file.write("\nFunmilayo")
-file.close()
+  try:
+    with open(filename, 'r') as file:
+      content = file.read()
 
-file= open("names.txt")
-print(file.read())
-file.close()
+    new_content = content + "\nI just added this new line."
 
-# Write(Overwrites)
-file= open("test.txt", "w")
-file.write("I am trying to add files to this empty file")
-file.close()
+    with open("modified_" + filename, 'w') as new_file:
+      new_file.write(new_content)
 
-file= open("test.txt")
-print(file.read())
-file.close()
+    print(f"File '{filename}' modified successfully. New file: 'modified_{filename}'")
 
-# Opens a file for writing, and creates if it doesn't exist
+  except FileNotFoundError:
+    print(f"Error: File '{filename}' not found.")
+  except IOError:
+    print(f"Error: Could not read or write file '{filename}'.")
+  
+# Get the filename from the user
+filename = input("Enter the filename: ")
 
-f= open("monkeys.txt", "w")
-f.close()
-     
-
-# Creates the specified file, but returns an error if the file exists
-if not os.path.exists("grace.txt"):
-    file= open("grace.txt","x")
-file.close()
-# avoid an error if it doesn't exist 
-if  os.path.exists("grace.txt"):
-    os.remove("grace.txt")
-else:
-    print("The file you wish to delete does not exist")
-
-with open("friends.txt") as file:
-    content= file.read()
-with open("names.txt","w") as file:
-    file.write(content)          
+# Modify the file
+modify_file(filename)
